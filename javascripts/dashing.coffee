@@ -45,12 +45,16 @@ class Dashing.Widget extends Batman.View
     type = Batman.Filters.dashize(@view)
     $(@node).addClass("widget widget-#{type} #{@id}")
 
-  @accessor 'updatedAtMessage', ->
+ @accessor 'updatedAtMessage', ->
     if updatedAt = @get('updatedAt')
       timestamp = new Date(updatedAt * 1000)
-      hours = timestamp.getHours()
       minutes = ("0" + timestamp.getMinutes()).slice(-2)
-      "Last updated at #{hours}:#{minutes}"
+      hours = timestamp.getHours()
+      if hours >13
+        hours-=12 if hours > 13
+        "Last updated at #{hours}:#{minutes} PM"
+      else
+        "Last updated at #{hours}:#{minutes} AM"
 
   @::on 'ready', ->
     Dashing.Widget.fire 'ready'
